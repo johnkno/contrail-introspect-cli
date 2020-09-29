@@ -214,7 +214,10 @@ class Introspect:
         now = datetime.utcnow()
 
         path_modified = path.find("last_modified").text
-        t1 = datetime.strptime(path_modified, '%Y-%b-%d %H:%M:%S.%f')
+        try:
+            t1 = datetime.strptime(path_modified, '%Y-%b-%d %H:%M:%S.%f')
+        except:
+            t1 = datetime.strptime(path_modified, '%Y-%b-%d %H:%M:%S')
         path_age = str(now - t1).replace(',', '')
         path_proto = path.find("protocol").text
         path_source = path.find("source").text
@@ -252,7 +255,10 @@ class Introspect:
 
         prefix = route.find("prefix").text
         prefix_modified = route.find("last_modified").text
-        t1 = datetime.strptime(prefix_modified, '%Y-%b-%d %H:%M:%S.%f')
+        try:
+            t1 = datetime.strptime(prefix_modified, '%Y-%b-%d %H:%M:%S.%f')
+        except:
+            t1 = datetime.strptime(prefix_modified, '%Y-%b-%d %H:%M:%S')
         prefix_age = str(now - t1).replace(',', '')
 
         route_info += "%s%s, age: %s, last_modified: %s" % \
@@ -409,15 +415,23 @@ class Introspect:
                         continue
                     prefix = route.find("prefix").text
                     prefix_modified = route.find("last_modified").text
-                    t1 = datetime.strptime(prefix_modified,
+                    try:
+                        t1 = datetime.strptime(prefix_modified,
                                            '%Y-%b-%d %H:%M:%S.%f')
+                    except:
+                        t1 = datetime.strptime(prefix_modified,
+                                           '%Y-%b-%d %H:%M:%S')
                     prefix_age = str(now - t1).replace(',', '')
 
                     if (last and (now - t1).total_seconds() > last):
                         for path in paths:
                             path_modified = path.find("last_modified").text
-                            t1 = datetime.strptime(path_modified,
+                            try:
+                                t1 = datetime.strptime(path_modified,
                                                    '%Y-%b-%d %H:%M:%S.%f')
+                            except:
+                                t1 = datetime.strptime(path_modified,
+                                                   '%Y-%b-%d %H:%M:%S')
                             path_age = str(now - t1).replace(',', '')
                             if not ((now - t1).total_seconds() > last) :
                                 print(("\n%s, age: %s, last_modified: %s" %
